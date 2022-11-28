@@ -2,8 +2,8 @@
 
 const express=require('express')
 const {createBook} = require('../controllers/bookController')
-const reviewController = require('../Controllers/reviewController')
 const userController = require("../controllers/userController")
+const reviewController = require('../Controllers/reviewController')
 const {authentication,authorization}=require('../Middleware/auth')
 const router=express.Router()
 
@@ -15,5 +15,8 @@ router.get("/test",(req,res)=>{
 
 
 router.post("/books",createBook)
+router.post("/register",userController.createUser)
+
+router.post("/login",userController.login)
 
 module.exports = router;
