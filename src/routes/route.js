@@ -1,7 +1,7 @@
 //__________________________ Import or Require Module ___________________________________________
 
 const express=require('express')
-const bookController = require('../Controllers/bookController')
+const {createBook} = require('../controllers/bookController')
 const reviewController = require('../Controllers/reviewController')
 const userController = require("../controllers/userController")
 const {authentication,authorization}=require('../Middleware/auth')
@@ -12,5 +12,8 @@ const router=express.Router()
 router.get("/test",(req,res)=>{
     return res.send({status:true,message:"This is My Group3 Project"});
 })
+
+
+router.post("/books",createBook)
 
 module.exports = router;
