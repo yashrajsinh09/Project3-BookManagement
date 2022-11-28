@@ -49,6 +49,7 @@ const login=async (req,res)=>{
        if(!isValidEmail(email)) return res.status(400).send({status:false,message:"please provide valid emailId"})
 
        if(!password) return res.status(400).send({status:false,message:"password is madnetory"})
+       if(!isValidpass(password)) return res.status(400).send({status:false,message:"invalid password"})
 
        const userData=await userModel.findOne({email,password})
        if(!userData) return res.status(404).send({status:false,message:"please provide valid emaiId and password"})
