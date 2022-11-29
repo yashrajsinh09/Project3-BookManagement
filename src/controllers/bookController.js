@@ -84,27 +84,13 @@ const getBooksById = async function (req, res) {
       if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, message: "BookId is not valid" })
     
       let result = await bookModel.findOne({ _id: bookId, isDeleted: false })
-      .select({_id:1,title:1,excerpt:1,userId:1,category:1,subcategory:1,isDeleted:1,reviews:1,releasedAt:1,createdAt:1,updatedAt:1})
+      .select({_id:1,title:1,excerpt:1,userId:1,category:1,subcategory:1,isDeleted:1,reviews:1,releasedAt:1,createdAt:1,updatedAt:1}).lean()
 
       if (!result) return res.status(404).send({ status: false, message: "Book does Not Exist" })
   
       const allRevies = await reviewModel.find({ bookId }).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 })
-        req.body.reviewsData =allRevies
-    //   responData = {
-    //     _id: result._id,
-    //     title: result.title,
-    //     excerpt: result.excerpt,
-    //     userId: result.userId,
-    //     category: result.category,
-    //     subcategory: result.subcategory,
-    //     isDeleted: result.isDeleted,
-    //     reviews: result.reviews,
-    //     releasedAt: result.releasedAt,
-    //     createdAt: result.createdAt,
-    //     updatedAt: result.updatedAt,
-    //     reviewsData: allRevies,
-    //   };
-  
+        result.reviewsData =allRevies
+   
       return res.status(200).send({ status: true, Data: result });
     } catch (err) {
       return res.status(500).send({ status: false, message: err.message });
