@@ -1,7 +1,7 @@
 //__________________________ Import or Require Module ___________________________________________
 
 const express=require('express')
-const {createBook,getBooks,getBooksById} = require('../controllers/bookController')
+const {createBook,getBooks,getBooksById,updateBooks} = require('../controllers/bookController')
 const userController = require("../controllers/userController")
 const bookController=require('../controllers/bookController')
 const reviewController = require('../Controllers/reviewController')
