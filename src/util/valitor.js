@@ -17,13 +17,16 @@ const isValidText = (text) => {
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 //ISBN 
-const isValidISBN = (ISBN) => {
-    const regex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(ISBN)
-    return regex
+function isValidISBN(ISBN) {
+    const regex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(ISBN);
+    return regex;
 }
 
 //for ReleasedAt
-const isValidReleasedAt = (date) =>  moment.utc(releasedAt, "YYYY-MM-DD", true).isValid(date)
-   
+const isValidReleasedAt = (date) => {
+// moment.utc(releasedAt, "YYYY-MM-DD", true).isValid(date)
+const regex =  /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/.test(date)
+return regex
+}   
 
 module.exports = {isValidBody,isValidText,isValidObjectId,isValidISBN,isValidReleasedAt}
