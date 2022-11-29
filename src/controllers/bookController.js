@@ -20,8 +20,11 @@ const createBook = async (req, res) => {
         if (!excerpt) return res.status(400).send({ status: false, message: "Please fill excerpt." });
         if (!isValidText(excerpt)) res.status(400).send({ status: false, message: `${excerpt} is not valid.` });
 
+        //userId validation
         if (!userId) return res.status(400).send({ status: false, message: "Please fill user Id." });
         if (!isValidObjectId(userId)) res.status(400).send({ status: false, message: `${userId} is not valid.` });
+        const validUser = await userModel.findById({_id:userId})
+        if(!validUser) return res.status(404).send({status:false,message:`${userId}  userId not exist`})
 
         if (!ISBN) return res.status(400).send({ status: false, message: "Please fill ISBN." });
         if (!isValidISBN(ISBN)) res.status(400).send({ status: false, message: `${ISBN} is not valid.` });
@@ -46,4 +49,5 @@ const createBook = async (req, res) => {
     }
 }
 
-module.exports = {createBook}
+
+module.exports = {createBook,getBook}
