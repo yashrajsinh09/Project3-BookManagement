@@ -1,13 +1,13 @@
 const userModel=require('../models/userModel')
 const jwt=require('jsonwebtoken')
-const{isValidRequestBody,isValidNumber,isValidEmail,isValidpass,isValidName}=require('../validation/valitor')
+const{isValidBody,isValidNumber,isValidEmail,isValidpass,isValidName}=require('../util/valitor')
 
 
 const createUser=async (req,res)=>{
   try{
        const reqBody=req.body
        const{title,name,phone,email,password,address}=req.body
-       if(!isValidRequestBody(reqBody)) return res.status(400).send({status:false,message:"data is required"})
+       if(!isValidBody(reqBody)) return res.status(400).send({status:false,message:"data is required"})
        if(!title) return res.status(400).send({status:false,message:"title is madnatory"})
        if(title!="Mr"&&title!="Mrs"&&title!="Miss") return res.status(400).send({status:false,message:"title can be Mr,Mrs,Miss only"})
        //name validation

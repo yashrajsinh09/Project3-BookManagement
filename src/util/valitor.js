@@ -23,10 +23,31 @@ function isValidISBN(ISBN) {
 }
 
 //for ReleasedAt
-const isValidReleasedAt = (date) => {
-// moment.utc(releasedAt, "YYYY-MM-DD", true).isValid(date)
-const regex =  /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/.test(date)
-return regex
-}   
+const isValidReleasedAt = (date) =>  moment.utc(releasedAt, "YYYY-MM-DD", true).isValid(date)
 
-module.exports = {isValidBody,isValidText,isValidObjectId,isValidISBN,isValidReleasedAt}
+const isValidNumber = function (num) {
+    const reg = /^[0-9]{10}$/;
+    return reg.test(String(num));
+}
+
+const isValidpass = function (password) {
+    const reg =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+    return reg.test(String(password));
+}
+
+//email validation
+function isValidEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email));
+}
+
+//name validation
+const isValidName = function (abc) {
+    if (typeof abc === 'undefined') return false;
+    if (typeof abc != 'string' && abc.trim().length === 0) return false
+    const regex = /^[a-z/\s/A-Z]{3,100}$/;
+    return regex.test(String(abc));
+}
+   
+
+module.exports = {isValidBody,isValidText,isValidObjectId,isValidISBN,isValidReleasedAt,isValidNumber,isValidEmail,isValidName,isValidpass}
