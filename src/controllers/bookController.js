@@ -99,5 +99,21 @@ const getBooksById = async function (req, res) {
       return res.status(500).send({ status: false, message: err.message });
     }
   }
+
+  const deleteBook=async (req,res)=>{
+        try{
+        const bookId=req.params.bookId
+        if(!bookId) return res.status(400).send({status:false,message:"please provide bookId"})
+        if(!isValidObjectId(bookId)) return res.status(400).send({status:false,message:"invalid bookId"})
+
+        const bookfind=await bookModel.findOne({_id:bookId,isDeleted:false})
+        if(!bookfind) return res.status(404).send({status:false,message:"book is not exist"})
+
+        await bookModel.findOneAndUpdate({_id:bookId},{$set:{isDeleted:true}},{$new:true})
+        return res.status(200).send({status:true,message:`${bookId} book is  deleted`})
+        }catch(error){
+        return res.status(500).send({ status: false, message: error.message });
+    }
+  }
   
-module.exports = {createBook,getBooks,getBooksById}
+module.exports = {createBook,getBooks,getBooksById,deleteBook}
