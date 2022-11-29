@@ -3,6 +3,7 @@
 const express=require('express')
 const {createBook,getBooks,getBooksById,updateBooks} = require('../controllers/bookController')
 const userController = require("../controllers/userController")
+const bookController=require('../controllers/bookController')
 const reviewController = require('../Controllers/reviewController')
 const {authentication,authorization}=require('../Middleware/auth')
 const router=express.Router()
@@ -14,12 +15,14 @@ router.get("/test",(req,res)=>{
 })
 
 
-router.post("/books",createBook)
-router.get("/books",getBooks)
-router.get("/books/:bookId",getBooksById)
-router.put("/books/:bookId",updateBooks)
 
 router.post("/register",userController.createUser)
 router.post("/login",userController.login)
+
+
+router.post("/books",createBook)
+router.get("/books",getBooks)
+router.get("/books/:bookId",getBooksById)
+router.delete("/books/:bookId",bookController.deleteBook)
 
 module.exports = router;
