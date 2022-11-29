@@ -21,4 +21,9 @@ router.get("/books/:bookId",getBooksById)
 router.post("/register",userController.createUser)
 router.post("/login",userController.login)
 
+//______________________ create review____________________________________
+router.post("/books/:bookId/review",reviewController.createReview)
+//______________________ Update review____________________________________
+router.put("/books/:bookId/review/:reviewId",reviewController.updateReview)
+
 module.exports = router;
