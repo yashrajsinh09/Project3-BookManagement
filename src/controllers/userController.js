@@ -43,8 +43,8 @@ const createUser=async (req,res)=>{
 
 const login=async (req,res)=>{
     try{
-        
        const{email,password}=req.body
+
        if(!email) return res.status(400).send({status:false,message:"emailId is madnatory"})
        if(!isValidEmail(email)) return res.status(400).send({status:false,message:"please provide valid emailId"})
 

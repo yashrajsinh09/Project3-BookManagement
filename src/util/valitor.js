@@ -17,9 +17,9 @@ const isValidText = (text) => {
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 //ISBN 
-const isValidISBN = (ISBN) => {
-    const regex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(ISBN)
-    return regex
+function isValidISBN(ISBN) {
+    const regex = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/.test(ISBN);
+    return regex;
 }
 
 //for ReleasedAt
