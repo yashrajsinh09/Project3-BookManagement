@@ -18,6 +18,10 @@ mongoose
 
 app.use("/",route)
 
+app.use((req, res) => {
+  res.status(400).send({ status: false, message: 'Invalid URL' })
+})
+
 //__________________________ Listen : Port ___________________________________________
 
 app.listen(port, (req, res) => {
