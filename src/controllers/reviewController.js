@@ -18,10 +18,7 @@ exports.createReview = async function (req, res) {
     data["bookId"] = bookId;
     const reviewCreated = await reviewModel.create(data);
 
-    let updatedBook = await bookModel.findOneAndUpdate(
-      { _id: bookId },
-      { $inc: { reviews: 1 } }
-    );
+    await bookModel.findOneAndUpdate({ _id: bookId }, { $inc: { reviews: 1 } });
     return res.status(201).send({
       status: true,
       message: "Review published",
@@ -59,7 +56,7 @@ exports.updateReview = async function (req, res) {
       });
     }
 
-    let updateReview = await reviewModel.findOneAndUpdate(
+    await reviewModel.findOneAndUpdate(
       { _id: reviewId },
       { $set: { ...data } },
       { runValidators: true }
@@ -77,13 +74,12 @@ exports.updateReview = async function (req, res) {
 
     return res.status(200).send({ status: true, Data: books });
   } catch (err) {
-    return res.status(500).send({ status: false, message: err.message });
+    return errorHandler(err, res);
   }
 };
 
 exports.deleteReview = async (req, res) => {
   try {
-    let data = req.body;
     let bookId = req.params.bookId;
     let reviewId = req.params.reviewId;
 
@@ -99,7 +95,7 @@ exports.deleteReview = async (req, res) => {
       });
     }
 
-    const deleteReview = await reviewModel.findOneAndUpdate(
+    await reviewModel.findOneAndUpdate(
       { _id: reviewId },
       { $set: { isDeleted: true } }
     );
@@ -117,6 +113,6 @@ exports.deleteReview = async (req, res) => {
       .status(200)
       .send({ status: true, data: "Review deleted successfully" });
   } catch (err) {
-    return res.status(500).send({ status: false, message: err.message });
+    return errorHandler(err, res);
   }
 };

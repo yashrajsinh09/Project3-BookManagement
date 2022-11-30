@@ -25,12 +25,12 @@ exports.login = async (req, res) => {
       });
 
     const token = jwt.sign({ userId: userData._id }, "group-3", {
-      expiresIn: "1m",
+      expiresIn: "1h",
     });
     return res
       .status(200)
       .send({ status: true, message: "Success", data: token });
   } catch (err) {
-    return res.status(500).send({ status: false, error: err.message });
+    return errorHandler(err, res);
   }
 };

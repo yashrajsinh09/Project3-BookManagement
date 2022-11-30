@@ -19,8 +19,8 @@ exports.createBook = async (req, res) => {
     return res
       .status(201)
       .send({ status: true, message: "Success", data: bookData });
-  } catch (error) {
-    return errorHandler(error, res);
+  } catch (err) {
+    return errorHandler(err, res);
   }
 };
 
@@ -65,7 +65,7 @@ exports.getBooks = async (req, res) => {
     } else
       return res.status(400).send({ status: false, message: "Invalid query." });
   } catch (err) {
-    res.status(500).send({ status: false, error: err.message });
+    return errorHandler(err, res);
   }
 };
 
@@ -102,14 +102,17 @@ exports.getBooksById = async function (req, res) {
       .status(200)
       .send({ status: true, message: "Books List", data: books });
   } catch (err) {
-    return res.status(500).send({ status: false, message: err.message });
+    return errorHandler(err, res);
   }
 };
 
 exports.updateBooks = async (req, res) => {
   try {
     const reqBody = req.body;
-    req.body.title = req.body.title[0].toUpperCase() + req.body.title.slice(1);
+    if (req.body.title) {
+      req.body.title =
+        req.body.title[0].toUpperCase() + req.body.title.slice(1);
+    }
     let { title, excerpt, ISBN, releasedAt } = reqBody;
     const bookId = req.params.bookId;
     if (!bookId) {
@@ -130,8 +133,8 @@ exports.updateBooks = async (req, res) => {
         .send({ status: false, message: "No book found with this ID" });
     }
     return res.status(200).send({ status: true, data: updatedBook });
-  } catch (error) {
-    return errorHandler(error, res);
+  } catch (err) {
+    return errorHandler(err, res);
   }
 };
 
@@ -157,7 +160,7 @@ exports.deleteBook = async (req, res) => {
     return res
       .status(200)
       .send({ status: true, message: `Book is  deleted successfully` });
-  } catch (error) {
-    return res.status(500).send({ status: false, message: error.message });
+  } catch (err) {
+    return errorHandler(err, res);
   }
 };

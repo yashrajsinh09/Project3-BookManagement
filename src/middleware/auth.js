@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bookModel = require("../models/bookModel");
-const authentication = function (req, res, next) {
+exports.authentication = function (req, res, next) {
   try {
     let token = req.headers["token"];
     if (!token) {
@@ -10,16 +10,14 @@ const authentication = function (req, res, next) {
     }
     try {
       let decodeToken = jwt.verify(token, "group-3");
-      console.log(decodeToken, Date.now() / 1000);
 
       req.token = decodeToken;
     } catch (err) {
-      return res
-        .status(401)
-        .send({
-          status: false,
-          message: "Either the token is expired or is invalid",
-        });
+      return res.status(401).send({
+        status: false,
+        message:
+          "Either the token is expired or is invalid, Please log-in again",
+      });
     }
     next();
   } catch (err) {
@@ -27,7 +25,7 @@ const authentication = function (req, res, next) {
   }
 };
 
-const authorization = async (req, res, next) => {
+exports.authorization = async (req, res, next) => {
   try {
     const book = await bookModel.findOne({ _id: req.params.bookId });
     const books = JSON.parse(JSON.stringify(book)); //Deep Copy
@@ -46,5 +44,3 @@ const authorization = async (req, res, next) => {
     return res.status(500).send({ status: false, msg: err.message });
   }
 };
-
-module.exports = { authentication, authorization };

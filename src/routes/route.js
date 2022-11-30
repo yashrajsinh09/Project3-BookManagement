@@ -31,9 +31,21 @@ router.delete(
 );
 router.post("/register", userController.createUser);
 router.post("/login", userController.login);
-router.post("/books/:bookId/review", reviewController.createReview);
-router.put("/books/:bookId/review/:reviewId", reviewController.updateReview);
-router.delete("/books/:bookId/review/:reviewId", reviewController.deleteReview);
+router.post(
+  "/books/:bookId/review",
+  middleware.authentication,
+  reviewController.createReview
+);
+router.put(
+  "/books/:bookId/review/:reviewId",
+  middleware.authentication,
+  reviewController.updateReview
+);
+router.delete(
+  "/books/:bookId/review/:reviewId",
+  middleware.authentication,
+  reviewController.deleteReview
+);
 
 router.all("*", (req, res) => {
   res.status(404).send(`Cannot find ${req.originalUrl}`);
