@@ -2,7 +2,7 @@ const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const errorHandler = require("../errorHandling/errorHandling");
 
-exports.createUser = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const usersData = await userModel.create(req.body);
     return res
@@ -13,7 +13,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -34,3 +34,4 @@ exports.login = async (req, res) => {
     return errorHandler(err, res);
   }
 };
+module.exports = { createUser, login };

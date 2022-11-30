@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bookModel = require("../models/bookModel");
+const errorHandler = require("../errorHandling/errorHandling");
+const { isValidObjectId } = require("mongoose");
+
 exports.authentication = function (req, res, next) {
   try {
     let token = req.headers["token"];
@@ -8,26 +11,27 @@ exports.authentication = function (req, res, next) {
         .status(401)
         .send({ status: false, msg: "You are not logged in" });
     }
-    try {
-      let decodeToken = jwt.verify(token, "group-3");
-
-      req.token = decodeToken;
-    } catch (err) {
-      return res.status(401).send({
-        status: false,
-        message:
-          "Either the token is expired or is invalid, Please log-in again",
-      });
-    }
+    const decodeToken = jwt.verify(token, "group-3");
+    req.token = decodeToken;
     next();
   } catch (err) {
-    return res.status(500).send({ status: false, err: err.message });
+    return errorHandler(err, res);
   }
 };
 
 exports.authorization = async (req, res, next) => {
   try {
+    if (!isValidObjectId(req.params.bookId)) {
+      return res
+        .status(400)
+        .send({ status: false, message: "Book ID is not valid" });
+    }
     const book = await bookModel.findOne({ _id: req.params.bookId });
+    if (!book) {
+      return res
+        .status(404)
+        .send({ status: false, message: "No book exist with this ID" });
+    }
     const books = JSON.parse(JSON.stringify(book)); //Deep Copy
 
     const userId = req.body.userId || books.userId;
@@ -41,6 +45,6 @@ exports.authorization = async (req, res, next) => {
 
     next();
   } catch (err) {
-    return res.status(500).send({ status: false, msg: err.message });
+    return errorHandler(err, res);
   }
 };
