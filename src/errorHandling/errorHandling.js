@@ -23,6 +23,12 @@ function errorHandle(error, res) {
       message: "Invalid Token",
     });
   }
+  if (error.message === "invalid token") {
+    return res.status(401).send({
+      status: false,
+      message: "Invalid Token",
+    });
+  }
   if (error.name == "CastError") {
     return res.status(400).send({ status: false, message: error.message });
   }

@@ -21,18 +21,20 @@ exports.authentication = function (req, res, next) {
 
 exports.authorization = async (req, res, next) => {
   try {
-    if (!isValidObjectId(req.params.bookId)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Book ID is not valid" });
+    if (req.params.bookId) {
+      if (!isValidObjectId(req.params.bookId)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "Book ID is not valid" });
+      }
+      const book = await bookModel.findOne({ _id: req.params.bookId });
+      if (!book) {
+        return res
+          .status(404)
+          .send({ status: false, message: "No book exist with this ID" });
+      }
+      var books = JSON.parse(JSON.stringify(book)); //Deep Copy
     }
-    const book = await bookModel.findOne({ _id: req.params.bookId });
-    if (!book) {
-      return res
-        .status(404)
-        .send({ status: false, message: "No book exist with this ID" });
-    }
-    const books = JSON.parse(JSON.stringify(book)); //Deep Copy
 
     const userId = req.body.userId || books.userId;
 
