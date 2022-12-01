@@ -7,7 +7,9 @@ app.use(express.json());
 
 mongoose
   .connect(
-    "mongodb+srv://yashrajsinh09:yashraj2727@assignment.lhpfmud.mongodb.net/group3Database",
+    // "mongodb+srv://yashrajsinh09:yashraj2727@assignment.lhpfmud.mongodb.net/group3Database",
+    "mongodb://yashrajsinh09:yashraj2727@ac-dvuehao-shard-00-00.lhpfmud.mongodb.net:27017,ac-dvuehao-shard-00-01.lhpfmud.mongodb.net:27017,ac-dvuehao-shard-00-02.lhpfmud.mongodb.net:27017/group3Database?ssl=true&replicaSet=atlas-dmoirr-shard-0&authSource=admin&retryWrites=true&w=majority",
+
     {
       useNewUrlParser: true,
     }

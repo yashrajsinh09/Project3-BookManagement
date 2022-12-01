@@ -15,8 +15,12 @@ router.post(
   middleware.authorization,
   bookController.createBook
 );
-router.get("/books", bookController.getBooks);
-router.get("/books/:bookId", bookController.getBooksById);
+router.get("/books", middleware.authentication, bookController.getBooks);
+router.get(
+  "/books/:bookId",
+  middleware.authentication,
+  bookController.getBooksById
+);
 router.put(
   "/books/:bookId",
   middleware.authentication,
