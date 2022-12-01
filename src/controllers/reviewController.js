@@ -4,10 +4,13 @@ const errorHandler = require("../errorHandling/errorHandling");
 
 exports.createReview = async function (req, res) {
   try {
-    const bookId = req.params.bookId;
+    // const bookId = req.params.bookId;
     const data = req.body;
 
-    const book = await bookModel.findOne({ _id: bookId, isDeleted: false });
+    const book = await bookModel.findOne({
+      _id: req.params.bookId,
+      isDeleted: false,
+    });
     if (!book) {
       return res.status(400).send({
         status: false,
@@ -15,14 +18,18 @@ exports.createReview = async function (req, res) {
       });
     }
     data.reviewedAt = Date.now();
-    data["bookId"] = bookId;
+    data["bookId"] = req.params.bookId;
     const reviewCreated = await reviewModel.create(data);
-
-    await bookModel.findOneAndUpdate({ _id: bookId }, { $inc: { reviews: 1 } });
+    const reviews = JSON.parse(JSON.stringify(reviewCreated));
+    const { bookId, reviewedBy, reviewedAt, rating, review, _id } = reviews;
+    await bookModel.findOneAndUpdate(
+      { _id: req.params.bookId },
+      { $inc: { reviews: 1 } }
+    );
     return res.status(201).send({
       status: true,
-      message: "Review published",
-      data: reviewCreated,
+      message: "Success",
+      data: { bookId, reviewedBy, reviewedAt, rating, review, _id },
     });
   } catch (err) {
     return errorHandler(err, res);
