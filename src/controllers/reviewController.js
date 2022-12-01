@@ -47,12 +47,13 @@ exports.updateReview = async function (req, res) {
     let findReview = await reviewModel.findOne({
       _id: reviewId,
       isDeleted: false,
+      bookId,
     });
 
     if (!findReview) {
       return res.status(404).send({
         status: false,
-        message: "A review with this id does not exists",
+        message: "A review with this id does not exists for this book",
       });
     }
 

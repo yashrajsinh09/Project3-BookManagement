@@ -17,13 +17,7 @@ function errorHandle(error, res) {
       message: "JWT is expired",
     });
   }
-  if (error.message === "invalid signature") {
-    return res.status(401).send({
-      status: false,
-      message: "Invalid Token",
-    });
-  }
-  if (error.message === "invalid token") {
+  if (error.message === "invalid signature" || "invalid token") {
     return res.status(401).send({
       status: false,
       message: "Invalid Token",

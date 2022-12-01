@@ -10,6 +10,7 @@ const reviewSchema = new mongoose.Schema({
   reviewedBy: {
     type: String,
     required: [true, "Please mention your name"],
+    trim: true,
     default: "Guest",
   },
   reviewedAt: {
