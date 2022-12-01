@@ -5,7 +5,7 @@ const { isValidObjectId } = require("mongoose");
 
 exports.authentication = function (req, res, next) {
   try {
-    let token = req.headers["token"];
+    let token = req.headers["x-api-key"];
     if (!token) {
       return res
         .status(401)
