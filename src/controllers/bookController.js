@@ -12,7 +12,7 @@ exports.createBook = async (req, res) => {
     let user = await userModel.findById(req.body.userId);
     if (!user) {
       return res
-        .status(400)
+        .status(404)
         .send({ status: false, message: "No user exist with this ID" });
     }
     let bookData = await bookModel.create(req.body);
