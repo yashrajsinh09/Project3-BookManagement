@@ -21,6 +21,14 @@ exports.authentication = function (req, res, next) {
 
 exports.authorization = async (req, res, next) => {
   try {
+    if (req.body.userId) {
+      if (!isValidObjectId(req.body.userId)) {
+        return res
+          .status(400)
+          .send({ status: false, message: "User ID is not valid" });
+      }
+    }
+
     if (req.params.bookId) {
       if (!isValidObjectId(req.params.bookId)) {
         return res

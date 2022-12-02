@@ -6,9 +6,6 @@ const userModel = require("../models/userModel");
 
 exports.createBook = async (req, res) => {
   try {
-    if (!isValidObjectId(req.body.userId)) {
-      return res.send("User ID is invalid");
-    }
     let user = await userModel.findById(req.body.userId);
     if (!user) {
       return res

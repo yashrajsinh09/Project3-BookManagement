@@ -5,8 +5,16 @@ const errorHandler = require("./errorHandling/errorHandling");
 
 const app = express();
 const port = 3000;
-//  app.use(express.json());
 app.use(express.json());
+app.use((err, req, res, next) => {
+  if (err.message === "Unexpected end of JSON input") {
+    return res
+      .status(400)
+      .send("ERROR Parsing Data, Please Provide a Valid JSON");
+  } else {
+    next();
+  }
+});
 
 mongoose
   .connect(
@@ -25,5 +33,3 @@ app.use("/", route);
 app.listen(port, () => {
   console.log(`Express is Running on ${port}`);
 });
-
-app.use(errorHandler);
