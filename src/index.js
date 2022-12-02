@@ -10,7 +10,10 @@ app.use((err, req, res, next) => {
   if (err.message === "Unexpected end of JSON input") {
     return res
       .status(400)
-      .send("ERROR Parsing Data, Please Provide a Valid JSON");
+      .send({
+        status: false,
+        message: "ERROR Parsing Data, Please Provide a Valid JSON",
+      });
   } else {
     next();
   }

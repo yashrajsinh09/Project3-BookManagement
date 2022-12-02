@@ -42,17 +42,25 @@ exports.authorization = async (req, res, next) => {
           .send({ status: false, message: "No book exist with this ID" });
       }
       var books = JSON.parse(JSON.stringify(book)); //Deep Copy
+      const userId = books.userId;
+
+      if (req.token.userId != userId) {
+        return res.status(403).send({
+          status: false,
+          msg: "You are not authorized to perform this action",
+        });
+      }
     }
+    if (req.body.userId) {
+      const userId = req.body.userId;
 
-    const userId = req.body.userId || books.userId;
-
-    if (req.token.userId != userId) {
-      return res.status(403).send({
-        status: false,
-        msg: "You are not authorized to perform this action",
-      });
+      if (req.token.userId != userId) {
+        return res.status(403).send({
+          status: false,
+          msg: "You are not authorized to perform this action, please provide valid USER ID",
+        });
+      }
     }
-
     next();
   } catch (err) {
     return errorHandler(err, res);

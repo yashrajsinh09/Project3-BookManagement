@@ -6,6 +6,15 @@ const userModel = require("../models/userModel");
 
 exports.createBook = async (req, res) => {
   try {
+    if (!req.body.userId) {
+      return res
+        .status(400)
+        .send({
+          status: false,
+          message: "User ID is a mandatory field, kindly provide user ID",
+        });
+    }
+
     let user = await userModel.findById(req.body.userId);
     if (!user) {
       return res
