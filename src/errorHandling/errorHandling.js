@@ -15,21 +15,21 @@ function errorHandle(error, res) {
       )}: ${Object.values(error.keyValue)}`,
     });
   }
-  if (error.message === "jwt expired") {
+  if (error.name === "TokenExpiredError") {
     return res.status(401).send({
       status: false,
-      message: "JWT is expired",
+      message: "JWT is expired, Please login again",
     });
   }
-  if (error.message === "invalid signature" || "invalid token") {
+  if (error.name === "JsonWebTokenError" || "SyntaxError") {
     return res.status(401).send({
       status: false,
-      message: "Invalid Token",
+      message: "Invalid Token, Please login again",
     });
   }
   if (error.name == "CastError") {
     return res.status(400).send({ status: false, message: error.message });
   }
-  return res.status(500).send({ status: false, message: error.message });
+  return res.status(500).send({ status: false, message: error.name });
 }
 module.exports = errorHandle;

@@ -25,7 +25,7 @@ const login = async (req, res) => {
       });
 
     const token = jwt.sign({ userId: userData._id }, "group-3", {
-      expiresIn: "1h",
+      expiresIn: "1m",
     });
     return res
       .status(200)

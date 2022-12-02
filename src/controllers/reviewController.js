@@ -70,12 +70,14 @@ exports.updateReview = async function (req, res) {
       { runValidators: true }
     );
 
-    const allReviews = await reviewModel.find({ bookId }).select({
-      isDeleted: 0,
-      __v: 0,
-      createdAt: 0,
-      updatedAt: 0,
-    });
+    const allReviews = await reviewModel
+      .find({ bookId, isDeleted: false })
+      .select({
+        isDeleted: 0,
+        __v: 0,
+        createdAt: 0,
+        updatedAt: 0,
+      });
     let books = JSON.parse(JSON.stringify(book));
     books.reviewsData = allReviews;
     books.reviews = allReviews.length;
