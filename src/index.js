@@ -1,8 +1,11 @@
 const express = require("express");
 const route = require("./routes/route");
 const mongoose = require("mongoose");
+const errorHandler = require("./errorHandling/errorHandling");
+
 const app = express();
 const port = 3000;
+//  app.use(express.json());
 app.use(express.json());
 
 mongoose
@@ -22,3 +25,5 @@ app.use("/", route);
 app.listen(port, () => {
   console.log(`Express is Running on ${port}`);
 });
+
+app.use(errorHandler);

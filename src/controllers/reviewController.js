@@ -12,7 +12,7 @@ exports.createReview = async function (req, res) {
       isDeleted: false,
     });
     if (!book) {
-      return res.status(400).send({
+      return res.status(404).send({
         status: false,
         message: "Either the Book ID is invalid or the book is deleted",
       });

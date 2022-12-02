@@ -21,7 +21,7 @@ function errorHandle(error, res) {
       message: "JWT is expired, Please login again",
     });
   }
-  if (error.name === "JsonWebTokenError" || "SyntaxError") {
+  if (error.name === "JsonWebTokenError") {
     return res.status(401).send({
       status: false,
       message: "Invalid Token, Please login again",
