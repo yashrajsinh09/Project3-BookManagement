@@ -1,10 +1,17 @@
 const reviewModel = require("../models/reviewModel");
 const bookModel = require("../models/bookModel");
 const errorHandler = require("../errorHandling/errorHandling");
+const { isValidObjectId } = require("mongoose");
 
 exports.createReview = async function (req, res) {
   try {
     // const bookId = req.params.bookId;
+    if (!isValidObjectId(req.params.bookId)) {
+      return res.status(400).send({
+        status: false,
+        message: "Please Provide a valid Book ID",
+      });
+    }
     const data = req.body;
 
     const book = await bookModel.findOne({
@@ -38,6 +45,18 @@ exports.createReview = async function (req, res) {
 
 exports.updateReview = async function (req, res) {
   try {
+    if (!isValidObjectId(req.params.bookId)) {
+      return res.status(400).send({
+        status: false,
+        message: "Please Provide a valid Book ID",
+      });
+    }
+    if (!isValidObjectId(req.params.reviewId)) {
+      return res.status(400).send({
+        status: false,
+        message: "Please Provide a valid Review ID",
+      });
+    }
     let data = req.body;
     let bookId = req.params.bookId;
     let reviewId = req.params.reviewId;
@@ -46,7 +65,7 @@ exports.updateReview = async function (req, res) {
       .findOne({ _id: bookId, isDeleted: false })
       .select({ __v: 0, deletedAt: 0, ISBN: 0 });
     if (!book) {
-      return res.status(400).send({
+      return res.status(404).send({
         status: false,
         message: "Either the book ID is invalid or the book is deleted",
       });
@@ -90,6 +109,18 @@ exports.updateReview = async function (req, res) {
 
 exports.deleteReview = async (req, res) => {
   try {
+    if (!isValidObjectId(req.params.bookId)) {
+      return res.status(400).send({
+        status: false,
+        message: "Please Provide a valid Book ID",
+      });
+    }
+    if (!isValidObjectId(req.params.reviewId)) {
+      return res.status(400).send({
+        status: false,
+        message: "Please Provide a valid Review ID",
+      });
+    }
     let bookId = req.params.bookId;
     let reviewId = req.params.reviewId;
 
@@ -114,7 +145,7 @@ exports.deleteReview = async (req, res) => {
       { $inc: { reviews: -1 } }
     );
     if (!updatedBook) {
-      return res.status(400).send({
+      return res.status(404).send({
         status: false,
         message: "Either the book ID is invalid or the book is deleted",
       });
