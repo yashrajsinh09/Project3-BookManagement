@@ -49,10 +49,11 @@ const UserSchema = new mongoose.Schema(
     address: {
       street: { type: String },
       city: { type: String },
-      pincode: { type: String },
+      pincode: { type: String }
     },
   },
   { timestamps: true }
 );
 
 module.exports = new mongoose.model("User", UserSchema);
+ 

@@ -1,8 +1,5 @@
 function errorHandle(error, res) {
-  if (error.name == "TypeError") {
-    return res.status(500).send({ status: false, message: error.message });
-  }
-
+ 
   if (error.name == "ValidationError") {
     return res.status(400).send({ status: false, message: error.message });
   }

@@ -128,9 +128,8 @@ exports.updateBooks = async (req, res) => {
     }
 
     const updatedBook = await bookModel.findOneAndUpdate(
-      { _id: bookId },
-      { $set: { title, excerpt, releasedAt, ISBN } },
-
+      { _id: bookId , isDeleted: false},
+      { $set: { title, excerpt, releasedAt, ISBN }},
       { new: true, runValidators: true }
     );
     if (!updatedBook) {
