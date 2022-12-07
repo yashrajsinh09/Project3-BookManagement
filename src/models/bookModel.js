@@ -26,6 +26,7 @@ const bookSchema = new mongoose.Schema(
         "ISBN is invalid, please provide valid ISBN number",
       ],
     },
+    bookCover:{type:String},
     category: {
       type: String,
       required: [true, "Please mention the category"],

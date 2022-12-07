@@ -3,9 +3,12 @@ const bookModel = require("../models/bookModel");
 const reviewModel = require("../models/reviewModel");
 const errorHandler = require("../errorHandling/errorHandling");
 const userModel = require("../models/userModel");
+const abc=require('../aws/aws')
 
 exports.createBook = async (req, res) => {
   try {
+   
+  
     if (!req.body.userId) {
       return res
         .status(400)
@@ -29,6 +32,22 @@ exports.createBook = async (req, res) => {
     return errorHandler(err, res);
   }
 };
+
+exports.createAwsurl=async (req,res)=>{
+try{
+  let files= req.files
+  if(files && files.length>0){
+      
+      let uploadedFileURL= await abc.uploadFile( files[0] )
+      res.status(201).send({msg: "file uploaded succesfully", data: uploadedFileURL})
+  }
+  else{
+      res.status(400).send({ msg: "No file found" })
+  }
+}catch(error){
+  return errorHandler(err, res);
+}
+}
 
 exports.getBooks = async (req, res) => {
   try {

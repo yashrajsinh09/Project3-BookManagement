@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bookModel = require("../models/bookModel");
 const errorHandler = require("../errorHandling/errorHandling");
 const { isValidObjectId } = require("mongoose");
+const abc=require('../aws/aws')
 
 exports.authentication = function (req, res, next) {
   try {
@@ -18,6 +19,21 @@ exports.authentication = function (req, res, next) {
     return errorHandler(err, res);
   }
 };
+
+exports.awsmiddleware=async (req,res,next)=>{
+  let files= req.files
+  if(files && files.length>0){
+     
+      let uploadedFileURL= await abc.uploadFile( files[0] )
+      res.status(201).send({msg: "file uploaded succesfully", data: uploadedFileURL})
+      console.log(uploadedFileURL)
+      req.uploadedFileURL=uploadedFileURL.Location
+  }
+  else{
+      res.status(400).send({ msg: "No file found" })
+  }
+  next()
+}
 
 exports.authorization = async (req, res, next) => {
   try {

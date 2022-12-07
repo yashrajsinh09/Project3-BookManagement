@@ -1,11 +1,12 @@
 const express = require("express");
 const route = require("./routes/route");
 const mongoose = require("mongoose");
-const errorHandler = require("./errorHandling/errorHandling");
+const multer=require('multer')
 
 const app = express();
 const port = 3000;
 app.use(express.json());
+app.use(multer().any())
 app.use((err, req, res, next) => {
   if (err.message === "Unexpected end of JSON input") {
     return res
